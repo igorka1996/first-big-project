@@ -1,0 +1,27 @@
+.flHeader{
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.headerfoto {
+    display: flex;
+    align-items: center;
+}
+
+.name{
+    border-bottom: 1px black dashed;
+    margin: 0 10px 0 0;
+}
+
+.img{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.link{
+    text-decoration: none;
+    color: black;
+}
