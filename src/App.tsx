@@ -24,12 +24,12 @@ function App() {
 
     const token = useParams()
 
-
-    useEffect(() => {
-        if (token.token) {
-            <Navigate to='/forgot/set-new-password/:token'/>
-        }
-    }, [])
+    //
+    // useEffect(() => {
+    //     if (token.token) {
+    //         <Navigate to='/forgot/set-new-password/:token'/>
+    //     }
+    // }, [])
 
 
     useEffect(() => {
