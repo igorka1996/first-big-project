@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import './App.css';
 import ButtonAppBar from "./components/Header";
 import SimplePaper from "./components/CardLogin";
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes, useParams} from "react-router-dom";
 import {ErrorSnackbar} from "./components/ErrorSnackbar";
 import {LineProgressBar} from "./components/LineProgressBar";
 import {useDispatch, useSelector} from "react-redux";
@@ -21,7 +21,19 @@ function App() {
     const initialize = useSelector<AppRootStateType, boolean>(state => state.errorReducer.initialize)
     const dispatch = useDispatch()
 
+
+    const token = useParams()
+
+
     useEffect(() => {
+        if (token.token) {
+            <Navigate to='/forgot/set-new-password/:token'/>
+        }
+    }, [])
+
+
+    useEffect(() => {
+
         dispatch(authTC() as any)
     }, [dispatch])
 
