@@ -66,7 +66,7 @@ export const registrationAuthLoginAPI = {
         const promise = instance.post('auth/forgot', {
             email: email, from: "test-front-admin <ai73a@yandex.by>", message: `<div style="background-color: lime; padding: 15px">
 password recovery link: 
-<a href='https://igorka1996.github.io/forgot/set-new-password/$token$'>
+<a href='https://igorka1996.github.io/first-big-project/forgot/set-new-password/$token$'>
 link</a>
 </div>`
         })
