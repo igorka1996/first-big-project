@@ -56,7 +56,7 @@ function App() {
                 <Route path={'/signin'} element={<SimplePaper up={false}/>}/>
                 <Route path={'/forgot'} >
                     <Route index element={<ForgotPassword/>}/>
-                    <Route path={'/set-new-password/:token'} element={<CreatePassword/>}/>
+                    <Route path={'set-new-password/:token'} element={<CreatePassword/>}/>
             </Route>
                 <Route path={'/checkemail'} element={<CheckEmail/>}/>
                 <Route path={'/personalinfo'} element={<PersonalInfo/>}/>
