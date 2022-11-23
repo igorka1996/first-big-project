@@ -33,6 +33,7 @@ function App() {
         </div>
     }
 
+    console.log('Privet')
 
     return (
         <div className={'App'}>

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
+    baseURL: process.env.REACT_APP_BACK_URL || 'https://neko-back.herokuapp.com/2.0/',
     withCredentials: true
 })
 export type Data = {
@@ -66,7 +66,7 @@ export const registrationAuthLoginAPI = {
         const promise = instance.post('auth/forgot', {
             email: email, from: "test-front-admin <ai73a@yandex.by>", message: `<div style="background-color: lime; padding: 15px">
 password recovery link: 
-<a href='http://localhost:3000/forgot/set-new-password/$token$'>
+<a href='https://igorka1996.github.io/first-big-project/forgot/set-new-password/$token$'>
 link</a>
 </div>`
         })
