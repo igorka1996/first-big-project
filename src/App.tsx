@@ -54,9 +54,11 @@ function App() {
             <Routes>
                 <Route path={'/'} element={<Osnova/>}/>
                 <Route path={'/signin'} element={<SimplePaper up={false}/>}/>
-                <Route path={'/forgot'} element={<ForgotPassword/>}/>
+                <Route path={'/forgot'} >
+                    <Route index element={<ForgotPassword/>}/>
+                    <Route path={'/set-new-password/:token'} element={<CreatePassword/>}/>
+            </Route>
                 <Route path={'/checkemail'} element={<CheckEmail/>}/>
-                <Route path={'/forgot/set-new-password/:token'} element={<CreatePassword/>}/>
                 <Route path={'/personalinfo'} element={<PersonalInfo/>}/>
             </Routes>
             <ErrorSnackbar/>
