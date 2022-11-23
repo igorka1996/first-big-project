@@ -67,7 +67,7 @@ export const registrationAuthLoginAPI = {
             email: email, from: "test-front-admin <ai73a@yandex.by>", message: `<div style="background-color: lime; padding: 15px">
 password recovery link: 
 https://igorka1996.github.io/first-big-project/forgot/set-new-password/327b1e60-6b3d-11ed-9bc3-29dc263e16ab
-<a href='https://igorka1996.github.io/first-big-project#/forgot/set-new-password/$token$'>
+<a href='https://igorka1996.github.io/first-big-project/forgot/set-new-password/$token$'>
 link</a>
 </div>`
         })
