@@ -24,11 +24,8 @@ import {AppRootStateType} from "../store-reducers/store";
 import {Navigate} from "react-router-dom";
 
 
-type PropsType = {
-    up: boolean
-}
 
-export default function BasicCard(props: PropsType) {
+export default function BasicCard() {
     const auth = useSelector<AppRootStateType, boolean>(state => state.registrationAuthLoginReducer.auth)
     const dispatch = useDispatch()
 
@@ -36,7 +33,7 @@ export default function BasicCard(props: PropsType) {
         showPassword: boolean;
     }
 
-    const [up, setUp] = useState(props.up)
+    const [up, setUp] = useState(false)
     const changeInAndUp = () => {
         setUp(!up)
     }

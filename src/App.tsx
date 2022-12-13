@@ -1,42 +1,30 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import ButtonAppBar from "./components/Header";
+import {Header} from "./components/Header";
 import SimplePaper from "./components/CardLogin";
-import {Navigate, Route, Routes, useParams} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import {ErrorSnackbar} from "./components/ErrorSnackbar";
-import {LineProgressBar} from "./components/LineProgressBar";
+import {LineProgressBar} from "./features/LineProgressBar";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store-reducers/store";
 import {StatusType} from "./store-reducers/error-reducer";
 import {authTC} from "./store-reducers/error-reducer";
-import {Osnova} from "./components/Osnova";
 import {ForgotPassword} from "./components/ForgotPassword";
 import {CheckEmail} from "./components/CheckEmail";
 import {CreatePassword} from "./components/CreatePassword";
 import {PersonalInfo} from "./components/PersonalInfo";
 import {CircularProgress} from "@mui/material";
+import {AllPacks} from "./components/AllPacks";
+import {Cards} from "./components/Cards";
 
-function App() {
+export function App() {
     const LineProgress = useSelector<AppRootStateType, StatusType>(state => state.errorReducer.status)
     const initialize = useSelector<AppRootStateType, boolean>(state => state.errorReducer.initialize)
     const dispatch = useDispatch()
 
-
-    const token = useParams()
-
-    //
-    // useEffect(() => {
-    //     if (token.token) {
-    //         <Navigate to='/forgot/set-new-password/:token'/>
-    //     }
-    // }, [])
-
-
     useEffect(() => {
-
         dispatch(authTC() as any)
     }, [dispatch])
-
 
     if (!initialize) {
         return <div
@@ -45,25 +33,22 @@ function App() {
         </div>
     }
 
-    console.log('Privet')
-
     return (
         <div className={'App'}>
-            <ButtonAppBar/>
+            <Header/>
             {LineProgress === 'loading' ? <LineProgressBar/> : null}
             <Routes>
-                <Route path={'/'} element={<Osnova/>}/>
-                <Route path={'/signin'} element={<SimplePaper up={false}/>}/>
-                <Route path={'/forgot'} >
+                <Route path={'/'} element={<AllPacks/>}/>
+                <Route path={'/signin'} element={<SimplePaper/>}/>
+                <Route path={'/forgot'}>
                     <Route index element={<ForgotPassword/>}/>
                     <Route path={'set-new-password/:token'} element={<CreatePassword/>}/>
-            </Route>
+                </Route>
                 <Route path={'/checkemail'} element={<CheckEmail/>}/>
                 <Route path={'/personalinfo'} element={<PersonalInfo/>}/>
+                <Route path={'/cards'} element={<Cards/>}/>
             </Routes>
             <ErrorSnackbar/>
         </div>
     )
 }
-
-export default App;

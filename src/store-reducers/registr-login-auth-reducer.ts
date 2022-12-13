@@ -8,18 +8,20 @@ export type InitialStateType = {
     registration: boolean,
     auth: boolean,
     img: string,
-    name: undefined | string,
+    name: string,
     email: undefined | string,
     newPass: boolean
+    id: string
 }
 
 const initialState: InitialStateType = {
     registration: false,
     auth: false,
     img: 'https://a.d-cd.net/OLn9cEYLYEkeQwmAwA_IyKhglqk-960.jpg',
-    name: undefined,
+    name: '',
     email: undefined,
-    newPass: false
+    newPass: false,
+    id: ''
 }
 
 
@@ -30,30 +32,35 @@ const slice = createSlice({
         registration(state, action: PayloadAction<{ value: boolean }>) {
             state.registration = action.payload.value
         },
-        loginAC(state, action: PayloadAction<{ value: boolean, name: string, avatar: string }>) {
+        loginAC(state, action: PayloadAction<{ value: boolean, name: string, avatar: string, id: string }>) {
             state.auth = action.payload.value
             state.name = action.payload.name
             state.img = action.payload.avatar
+            state.id = action.payload.id
         },
-        authAC(state, action: PayloadAction<{ value: boolean, name: string, email: string }>) {
+        authAC(state, action: PayloadAction<{ value: boolean, name: string, email: string, id: string }>) {
             state.auth = action.payload.value
             state.name = action.payload.name
             state.email = action.payload.email
+            state.id = action.payload.id
         },
         logOutAC(state, action: PayloadAction<{ logOut: boolean }>) {
             state.auth = action.payload.logOut
             state.img = 'https://a.d-cd.net/OLn9cEYLYEkeQwmAwA_IyKhglqk-960.jpg'
-            state.name = undefined
+            state.name = ''
         },
         avatarAC(state, action: PayloadAction<{ img: string }>) {
             state.img = action.payload.img
         },
-        newPassAC(state, action: PayloadAction<{ pass: boolean }>){
+        newPassAC(state, action: PayloadAction<{ pass: boolean }>) {
             state.newPass = action.payload.pass
+        },
+        nameAC(state, action: PayloadAction<{ name: string }>) {
+            state.name = action.payload.name
         }
     }
 })
-export const {registration, loginAC, authAC, logOutAC, avatarAC, newPassAC} = slice.actions
+export const {registration, loginAC, authAC, logOutAC, avatarAC, newPassAC, nameAC} = slice.actions
 export const registrationAuthLoginReducer = slice.reducer
 
 export const registrationTC = (data: Data) => async (dispatch: Dispatch) => {
@@ -80,7 +87,12 @@ export const loginTC = (data: DataLogin) => async (dispatch: Dispatch) => {
     try {
         dispatch(statusAC({status: "loading"}))
         let response = await registrationAuthLoginAPI.login(data)
-        dispatch(loginAC({value: true, name: response.data.name, avatar: response.data.avatar ? response.data.avatar : 'https://aif-s3.aif.ru/images/019/507/eeba36a2a2d37754bab8b462f4262d97.jpg'}))
+        dispatch(loginAC({
+            value: true,
+            name: response.data.name,
+            avatar: response.data.avatar ? response.data.avatar : 'https://a.d-cd.net/OLn9cEYLYEkeQwmAwA_IyKhglqk-960.jpg',
+            id: response.data._id
+        }))
         dispatch(statusAC({status: "success"}))
     } catch (e) {
         const err = e as Error
@@ -95,38 +107,11 @@ export const loginTC = (data: DataLogin) => async (dispatch: Dispatch) => {
 }
 
 
-// export const authTC = () => async (dispatch: Dispatch) => {
-//     try {
-//         dispatch(statusAC({status: "loading"}))
-//         let response = await registrationAuthLoginAPI.auth()
-//         if (response.status === 200) {
-//             dispatch(authAC({value: true, name: response.data.name, email: response.data.email}))
-//             if (response.data.avatar) {
-//                 dispatch(avatarAC({img: response.data.avatar}))
-//                 dispatch(statusAC({status: "success"}))
-//             }
-//             dispatch(statusAC({status: "success"}))
-//         }
-//         dispatch(statusAC({status: "success"}))
-//     } catch (e) {
-//         const err = e as Error
-//         if (axios.isAxiosError(e)) {
-//             dispatch(errorAC({error: e.response ? e.response.data.error : e.message}))
-//             dispatch(statusAC({status: "idle"}))
-//         } else if (err) {
-//             dispatch(errorAC({error: err.message}))
-//             dispatch(statusAC({status: "idle"}))
-//         }
-//     }
-// }
-
-
 export const logOutTC = () => async (dispatch: Dispatch) => {
     try {
         dispatch(statusAC({status: "loading"}))
         let response = await registrationAuthLoginAPI.logOut()
         if (response.data.info) {
-            console.log(response.data.info)
             dispatch(logOutAC({logOut: false}))
             dispatch(statusAC({status: "success"}))
         }
@@ -163,7 +148,6 @@ export const forgotTC = (email: string) => async (dispatch: Dispatch) => {
 }
 
 
-
 export const newPassTC = (pass: string, token: string) => async (dispatch: Dispatch) => {
     try {
         dispatch(statusAC({status: "loading"}))
@@ -171,6 +155,25 @@ export const newPassTC = (pass: string, token: string) => async (dispatch: Dispa
         dispatch(newPassAC({pass: true}))
         dispatch(statusAC({status: "success"}))
         return true
+    } catch (e) {
+        const err = e as Error
+        if (axios.isAxiosError(e)) {
+            dispatch(errorAC({error: e.response ? e.response.data.error : e.message}))
+            dispatch(statusAC({status: "idle"}))
+        } else if (err) {
+            dispatch(errorAC({error: err.message}))
+            dispatch(statusAC({status: "idle"}))
+        }
+    }
+}
+
+
+export const nameTC = (name: string) => async (dispatch: Dispatch) => {
+    try {
+        dispatch(statusAC({status: "loading"}))
+        const res = await registrationAuthLoginAPI.name(name)
+        dispatch(nameAC({name: res.data.updatedUser.name}))
+        dispatch(statusAC({status: "success"}))
     } catch (e) {
         const err = e as Error
         if (axios.isAxiosError(e)) {
